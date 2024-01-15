@@ -3,7 +3,7 @@ import { fetchPlanets } from '../services/api';
 
 interface Planet {
   name: string;
-  residents: string,
+  residents: string[];
   rotation_period: string;
   orbital_period: string;
   diameter: string;
@@ -19,7 +19,7 @@ interface Planet {
 }
 
 function Table() {
-  const [planets, setPlanets] = useState([]);
+  const [planets, setPlanets] = useState<Planet[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
