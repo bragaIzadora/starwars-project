@@ -21,7 +21,7 @@ function NumericFilters() {
     };
 
     setNumericFilters((Filters: NumericFilter[]) => [...Filters, Filter]);
-    setColumn(availableColumns[0]); // reset column to first available column
+    setColumn(availableColumns[0]);
   };
 
   const removeFilter = (index: number) => {
