@@ -24,8 +24,27 @@ function NumericFilters() {
     setColumn(availableColumns[0]); // reset column to first available column
   };
 
+  const removeFilter = (index: number) => {
+    setNumericFilters((Filters: NumericFilter[]) => Filters
+      .filter((_, i) => i !== index));
+  };
+
+  const removeAllFilters = () => {
+    setNumericFilters([]);
+  };
   return (
     <div>
+      {numericFilters.map((filter, index) => (
+        <div data-testid="filter" key={ index }>
+          <span>
+            { filter.column }
+            { filter.comparison }
+            { filter.value }
+          </span>
+          <button onClick={ () => removeFilter(index) }>X</button>
+        </div>
+      ))}
+
       <select
         data-testid="comparison-filter"
         value={ comparison }
@@ -58,6 +77,13 @@ function NumericFilters() {
         onClick={ handleFilter }
       >
         Filtrar
+      </button>
+
+      <button
+        data-testid="button-remove-filters"
+        onClick={ removeAllFilters }
+      >
+        Remover filtragens
       </button>
     </div>
   );
