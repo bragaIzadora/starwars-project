@@ -1,8 +1,18 @@
 import React from 'react';
-// import { render, screen } from '@testing-library/react';
-// import App from '../App';
+import App from '../App';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-test('I am your test', () => {
-  const I = "your father";
-  expect(I).toBe("your father");
+test('App data-testid', () => {
+  render(<App />);
+
+  expect(screen.getByTestId('name-filter')).toBeInTheDocument();
+
+  expect(screen.getByTestId('button-filter')).toBeInTheDocument();
+
+  userEvent.click(screen.getByTestId('button-filter'));
+
 });
+
+
+
