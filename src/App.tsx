@@ -1,13 +1,16 @@
-import React from 'react';
 import './App.css';
 import Table from './components/table';
+import { PlanetsProvider } from './Context/planetsContext';
+import NumericFilters from './components/starwarsNumericFilters';
 
 function App() {
   return (
-    <div>
-      <span>Hello, App!</span>
-      <Table />
-    </div>
+    <PlanetsProvider>
+      <div>
+        <NumericFilters />
+        <Table />
+      </div>
+    </PlanetsProvider>
   );
 }
 

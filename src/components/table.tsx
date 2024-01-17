@@ -1,26 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { fetchPlanets } from '../services/api';
-
-interface Planet {
-  name: string;
-  residents: string[];
-  rotation_period: string;
-  orbital_period: string;
-  diameter: string;
-  climate: string;
-  gravity: string;
-  terrain: string;
-  surface_water: string;
-  population: string;
-  films: string[];
-  created: string;
-  edited: string;
-  url: string;
-}
+import { Planet, usePlanets } from '../Context/planetsContext';
 
 function Table() {
   const [planets, setPlanets] = useState<Planet[]>([]);
   const [filterText, setFilterText] = useState('');
+  const { numericFilters } = usePlanets();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,11 +24,31 @@ function Table() {
     fetchData();
   }, []);
 
+  const applyFilter = (planet: Planet) => {
+    return numericFilters.every((filter: any) => {
+      const planetValue = Number(planet[filter.column]);
+      switch (filter.comparison) {
+        case 'maior que':
+          return planetValue > filter.value;
+        case 'menor que':
+          return planetValue < filter.value;
+        case 'igual a':
+          return planetValue === filter.value;
+        default:
+          return true;
+      }
+    });
+  };
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilterText(event.target.value);
   };
 
-  const filteredPlanets = planets.filter((planet) => planet.name.includes(filterText));
+  const filteredPlanets = planets.filter(
+    (planet) => planet.name.toLowerCase().includes(filterText.toLowerCase()),
+  );
+
+  const filteredLocalPlanets = filteredPlanets.filter(applyFilter);
 
   return (
     <div>
@@ -73,7 +78,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {filteredPlanets.map((planet: Planet) => (
+          {filteredLocalPlanets.map((planet: Planet) => (
             <tr key={ planet.name }>
               <td>{planet.name}</td>
               <td>{planet.rotation_period}</td>
