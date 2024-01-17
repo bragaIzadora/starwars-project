@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { usePlanets, NumericFilter } from '../Context/planetsContext';
 
 function NumericFilters() {
-  const { setNumericFilters } = usePlanets();
+  const { setNumericFilters, numericFilters } = usePlanets();
 
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('0');
+
+  const columns = ['population', 'orbital_period', 'diameter', 'rotation_period',
+    'surface_water'];
+  const usedColumns = numericFilters.map((filter) => filter.column);
+  const availableColumns = columns.filter((col) => !usedColumns.includes(col));
 
   const handleFilter = () => {
     const Filter: NumericFilter = {
@@ -16,6 +21,7 @@ function NumericFilters() {
     };
 
     setNumericFilters((Filters: NumericFilter[]) => [...Filters, Filter]);
+    setColumn(availableColumns[0]); // reset column to first available column
   };
 
   return (
@@ -35,11 +41,9 @@ function NumericFilters() {
         value={ column }
         onChange={ (e) => setColumn(e.target.value) }
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        {availableColumns.map((col) => (
+          <option key={ col } value={ col }>{col}</option>
+        ))}
       </select>
 
       <input
